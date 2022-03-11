@@ -1,0 +1,24 @@
+:root {
+  font: 16px / 1.4 sans-serif;
+
+  --text-sm: .92rem;
+  --text-error: darkred;
+  --bg-error: #fee;
+  --border-radius-sm: 4px;
+  --padding-sm: 8px;
+}
+
+status-message {
+  display: block;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+}
+
+@keyframes slide-in-out {
+  from { transform: translateX(400px) }
+  5% { transform: translateX(0) }
+  95% { transform: translateX(0) }
+  to { transform: translateX(400px) }
+}
