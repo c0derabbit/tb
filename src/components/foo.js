@@ -20,7 +20,7 @@ export default class FooFoo extends HTMLElement {
 }
 
 async function getTripdata() {
-  const url = 'https://api.tnybird.co/v0/pipes/yellow_tripdata_2017_pipe.json?q=SELECT * FROM _ LIMIT 20'
+  const url = 'https://api.tinybird.co/v0/pipes/yellow_tripdata_2017_pipe.json?q=SELECT * FROM _ LIMIT 20'
 
   const headers = new Headers()
   headers.append(

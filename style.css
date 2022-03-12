@@ -15,10 +15,3 @@ status-message {
   right: 20px;
   width: 300px;
 }
-
-@keyframes slide-in-out {
-  from { transform: translateX(400px) }
-  5% { transform: translateX(0) }
-  95% { transform: translateX(0) }
-  to { transform: translateX(400px) }
-}

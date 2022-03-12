@@ -12,6 +12,13 @@ export default class StatusMessage extends HTMLElement {
 
       const style = document.createElement('style')
       style.textContent = `
+        @keyframes slide-in-out {
+          from { transform: translateX(400px) }
+          8% { transform: translateX(0) }
+          92% { transform: translateX(0) }
+          to { transform: translateX(400px) }
+        }
+
         .error {
           font-size: var(--text-sm);
           color: var(--text-error);
