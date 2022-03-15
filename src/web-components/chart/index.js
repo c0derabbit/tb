@@ -9,6 +9,9 @@ import {
 } from '../../elements'
 import { CHART_STYLE } from '../../style'
 import {
+  AVG_FARE_AMOUNT_BY_15MIN_INTERVAL,
+  AVG_TRIP_DISTANCE_BY_15MIN_INTERVAL,
+  FARE_AMOUNT_PER_MILE_BY_15MIN_INTERVAL,
   SINGLE_PAX_RATIO_BY_15MIN_INTERVAL,
   TRIP_COUNT_BY_15MIN_INTERVAL,
 } from '../../queries'
@@ -21,6 +24,18 @@ export default class Chart extends HTMLElement {
     'single_passenger_rides': {
       q: SINGLE_PAX_RATIO_BY_15MIN_INTERVAL,
       formatter: val => `${val.toFixed(0)}%`,
+    },
+    'average_fare_amount': {
+      q: AVG_FARE_AMOUNT_BY_15MIN_INTERVAL,
+      formatter: val => `$${val.toFixed(2)}`,
+    },
+    'average_trip_distance': {
+      q: AVG_TRIP_DISTANCE_BY_15MIN_INTERVAL,
+      formatter: val => `${val.toFixed(2)}`,
+    },
+    'fare_amount_per_mile': {
+      q: FARE_AMOUNT_PER_MILE_BY_15MIN_INTERVAL,
+      formatter: val => `$${val.toFixed(2)}`,
     },
   }
   selectedKeys = ['pickup_time', 'total_rides']

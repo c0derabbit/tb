@@ -1,5 +1,5 @@
 import { createSVGElement } from '../helpers'
-import { createLabel } from '..'
+import createLabel from '../label'
 
 export default function createChart() {
   const chart = document.createElement('div')

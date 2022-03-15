@@ -1,4 +1,4 @@
-# Tinybird NYC taxi trip data exploration
+# Tinybird NYC yellow trip data exploration
 
 ## Setup
 
