@@ -2,28 +2,28 @@ export default function createChartHeader(el) {
   const header = document.createElement('header')
   header.classList.add('flex', 'gap-sm')
 
-  ;['x', 'y'].forEach((axis, idx) => {
-    const label = document.createElement('label')
-    label.innerText = `${axis.toUpperCase()} axis`
+  const label = document.createElement('label')
+  label.innerText = `Select property to compare against time of day`
 
-    const select = document.createElement('select')
-    select.setAttribute('id', `select_${idx}`)
-    select.addEventListener('change', el.handleSelect?.bind(el))
+  const select = document.createElement('select')
+  select.setAttribute('id', `select_1`)
+  select.addEventListener('change', el.handleSelect?.bind(el))
 
-    el.meta?.forEach(({ name, type }) => {
-      const option = document.createElement('option')
+  el.meta?.forEach(({ name, type }) => {
+    if (name === 'pickup_time') return
 
-      option.value = name
-      option.innerText = name.replace('_', ' ')
-      option.dataset.type = type
-      option.selected = name === el.selectedKeys[idx]
+    const option = document.createElement('option')
 
-      select.appendChild(option)
-    })
+    option.value = name
+    option.innerText = name.replace('_', ' ')
+    option.dataset.type = type
+    option.selected = name === el.selectedKeys[1]
 
-    label.appendChild(select)
-    header.appendChild(label)
+    select.appendChild(option)
   })
+
+  label.appendChild(select)
+  header.appendChild(label)
 
   return header
 }

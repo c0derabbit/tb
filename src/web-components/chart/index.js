@@ -78,7 +78,7 @@ export default class Chart extends HTMLElement {
 
       const datapointElement = createDataPoint(
         typeof x === 'number' ? x : idx,
-        typeof y === 'number' ? y : yValues.indexOf(y),
+        typeof y === 'number' ? y : this.yValues.indexOf(y),
         maxX,
         maxY,
       )
@@ -101,7 +101,9 @@ export default class Chart extends HTMLElement {
     yLabel.innerHTML = `
       <span>${this.selectedKeys[1].replace('_', ' ')}</span>
       <small class="axis-legend">
-        <span>${yLabelValues.join('</span><span>')}</span>
+        <span><span>
+          ${yLabelValues.join('</span></span><span><span>')}
+        </span></span>
       </small>
     `
   }
@@ -110,11 +112,12 @@ export default class Chart extends HTMLElement {
     const step = values.length >= labelCount ? Math.round(values.length / labelCount) : 1
     const labels = []
 
+    if (typeof values[0] === 'number')
+      labels.push(0)
+
     for (let i = 0; i < values.length - step + 1; i += step)
       labels.push(values[i])
     labels.push(values[values.length - 1])
-
-    console.log(labels)
 
     return labels
   }

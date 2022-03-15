@@ -23,29 +23,43 @@ label {
   line-height: 1;
 }
 
+.axis-legend > span {
+  width: 0;
+  height: 0;
+  overflow: visible;
+}
+
 #x-label {
-  transform: translate(70px, -30px);
+  transform: translate(70px, -18px);
   width: 80vw;
 }
 
 #x-label .axis-legend span {
-  transform: rotate(-90deg) translate(10px, -10px);
+  transform: rotate(-90deg);
 }
 
 #y-label {
-  transform: rotate(-90deg) translate(100px, 47px);
+  transform: rotate(-90deg) translate(90px, 20px);
   transform-origin: bottom left;
-  width: calc(60vh + 40px);
+  width: 60vh;
 }
 
-#y-label .axis-legend span {
-  transform: rotate(90deg);
-  width: 10rem;
+#y-label .axis-legend > span {
+  transform: rotate(90deg) translate(-15px, -10px);
+  overflow: visible;
+}
+
+#y-label .axis-legend span span {
+  /* what an ugly hack! sorry for this. */
+  display: inline-block;
+  width: 60px;
   text-align: right;
 }
 
-.point {
-  fill: var(--chart-primary);
+.bar {
+  stroke: var(--chart-primary);
+  stroke-width: 6px;
+  transform: translateX(4px);
 }
 `
 

@@ -33,7 +33,7 @@ describe('elements', () => {
     it('creates svg element with correct coordinates', () => {
       const datapoint = createDataPoint(1, 2, 4, 4)
 
-      expect(datapoint.outerHTML).toContain('<circle cx="25%" cy="50%"')
+      expect(datapoint.outerHTML).toContain('<line x1="25%" y1="50%"')
     })
   })
 

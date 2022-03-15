@@ -13,7 +13,9 @@ export default class StatusMessage extends HTMLElement {
       errorMessage.classList.add('error')
       errorMessage.innerText = event.detail?.error?.toString() || 'Something went wrong'
 
-      this.shadowRoot.append(createStyle(ERROR_STYLE))
+      const style = createStyle(ERROR_STYLE)
+
+      this.shadowRoot.append(style)
       this.shadowRoot.append(errorMessage)
 
       setTimeout(() => {

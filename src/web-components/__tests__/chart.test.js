@@ -24,20 +24,13 @@ describe('Chart', () => {
   })
 
   window.EventBus = new EventBus()
-  const chart = new Chart()
 
-  it('creates header; creates and fills chart when connected', async () => {
-    jest.spyOn(chart, 'createChartHeader')
-    jest.spyOn(chart, 'createChart')
-
+  it('updates selected keys and fills chart on select change', async () => {
+    const chart = new Chart()
     await chart.connectedCallback()
 
-    expect(chart.createChartHeader).toBeCalled()
-    expect(chart.createChart).toBeCalled()
-  })
-
-  it('updates selected keys and fills chart on select change', () => {
     expect(chart.selectedKeys).not.toContain('foo')
+
     chart.handleSelect({
       target: {
         value: 'foo',
