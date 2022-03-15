@@ -36,8 +36,12 @@ export default class Chart extends HTMLElement {
   }
 
   async connectedCallback() {
+    const params = new URLSearchParams(window.location.search)
+    const query = params.get('q') || 'total_rides'
+    this.selectedKeys[1] = query
+
     try {
-      const res = await getTripdata(TRIP_COUNT_BY_15MIN_INTERVAL)
+      const res = await getTripdata(this.queries[query].q)
       const { data } = await res.json()
 
       this.data = data || []
@@ -61,6 +65,7 @@ export default class Chart extends HTMLElement {
     const { id, value } = e.target
     const selectIdx = id.substr(-1)
     this.selectedKeys[selectIdx] = value
+    window.history.pushState({}, '', `?q=${value}`)
 
     try {
       const res = await getTripdata(this.queries[value].q)
