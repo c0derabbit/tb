@@ -5,7 +5,7 @@ export default class StatusMessage extends HTMLElement {
   }
 
   connectedCallback() {
-    window.EventBus?.addEventListener('error', event => {
+    window.EventBus.addEventListener('error', event => {
       const errorMessage = document.createElement('div')
       errorMessage.classList.add('error')
       errorMessage.innerText = event.detail?.error?.toString() || 'Something went wrong'

@@ -1,10 +1,10 @@
 import 'regenerator-runtime/runtime'
 
 import EventBus from './event-bus'
-import FooFoo from './components/foo'
-import StatusMessage from './components/status-message'
+import Chart from './web-components/chart'
+import StatusMessage from './web-components/status-message'
 
 window.EventBus = new EventBus()
 
-customElements.define('foo-foo', FooFoo)
+customElements.define('tb-chart', Chart)
 customElements.define('status-message', StatusMessage)
