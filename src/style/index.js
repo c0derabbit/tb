@@ -8,7 +8,8 @@ export const CHART_STYLE = `
 }
 
 label {
-  display: block;
+  display: flex;
+  flex-direction: column;
   font-size: var(--text-sm);
 }
 
@@ -23,14 +24,18 @@ label {
 }
 
 #x-label {
-  transform: translate(50px, -50px);
+  transform: translate(70px, -30px);
   width: 80vw;
 }
 
+#x-label .axis-legend span {
+  transform: rotate(-90deg) translate(10px, -10px);
+}
+
 #y-label {
-  transform: rotate(-90deg) translate(118px, 27px);
+  transform: rotate(-90deg) translate(100px, 47px);
   transform-origin: bottom left;
-  width: 60vh;
+  width: calc(60vh + 40px);
 }
 
 #y-label .axis-legend span {

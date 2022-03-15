@@ -11,7 +11,11 @@ import { CHART_STYLE } from '../../style'
 import { TRIP_COUNT_BY_15MIN_INTERVAL } from '../../queries'
 
 export default class Chart extends HTMLElement {
-  selectedKeys = ['pickup_time', 'count']
+  selectedKeys = ['pickup_time', 'total_rides']
+  data
+  meta
+  xValues
+  yValues
 
   constructor() {
     super()
@@ -55,7 +59,8 @@ export default class Chart extends HTMLElement {
     group.innerHTML = ''
 
     const [key0, key1] = this.selectedKeys
-    const yValues = this.data.map(d => d[key1]).sort((a, b) => a - b)
+    this.xValues = this.data.map(d => d[key0])
+    this.yValues = this.data.map(d => d[key1]).sort((a, b) => a - b)
 
     const keyType = (key) => this.meta.find(({ name }) => name === key)?.type
     const getMax = (data, key) => isNumber(keyType(key))
@@ -63,9 +68,9 @@ export default class Chart extends HTMLElement {
       : data.length
 
     const maxX = getMax(this.data, key0)
-    const maxY = getMax(yValues, key1)
+    const maxY = getMax(this.yValues, key1)
 
-    this.updateLabels(maxX, maxY)
+    this.updateLabels()
 
     this.data.forEach((datapoint, idx) => {
       const x = datapoint[key0]
@@ -81,34 +86,36 @@ export default class Chart extends HTMLElement {
     })
   }
 
-  updateLabels(maxX, maxY) {
+  updateLabels() {
     const xLabel = this.shadowRoot.getElementById('x-label')
     const yLabel = this.shadowRoot.getElementById('y-label')
-    const xLabelValues = this.getLabelValues(maxX, 20)
-    const yLabelValues = this.getLabelValues(maxY, 10)
+    const xLabelValues = this.getLabelValues(this.xValues, 24)
+    const yLabelValues = this.getLabelValues(this.yValues, 10)
 
     xLabel.innerHTML = `
       <small class="axis-legend">
         <span>${xLabelValues.join('</span><span>')}</span>
       </small>
-      <span>${this.selectedKeys[0]}</span>
+      <span>${this.selectedKeys[0].replace('_', ' ')}</span>
     `
     yLabel.innerHTML = `
-      <span>${this.selectedKeys[1]}</span>
+      <span>${this.selectedKeys[1].replace('_', ' ')}</span>
       <small class="axis-legend">
         <span>${yLabelValues.join('</span><span>')}</span>
       </small>
     `
   }
 
-  getLabelValues(max, maxLabelsToShow) {
-    const step = max >= maxLabelsToShow ? Math.round(max / maxLabelsToShow) : 1
-    const values = []
-    for (let i = 0; i < max - step + 1; i += step) {
-      values.push(i)
-    }
-    values.push(max)
+  getLabelValues(values, labelCount) {
+    const step = values.length >= labelCount ? Math.round(values.length / labelCount) : 1
+    const labels = []
 
-    return values
+    for (let i = 0; i < values.length - step + 1; i += step)
+      labels.push(values[i])
+    labels.push(values[values.length - 1])
+
+    console.log(labels)
+
+    return labels
   }
 }

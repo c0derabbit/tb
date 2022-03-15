@@ -14,7 +14,7 @@ export default function createChartHeader(el) {
       const option = document.createElement('option')
 
       option.value = name
-      option.innerText = name
+      option.innerText = name.replace('_', ' ')
       option.dataset.type = type
       option.selected = name === el.selectedKeys[idx]
 
