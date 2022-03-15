@@ -9,15 +9,12 @@ export default function createChartHeader(el) {
   select.setAttribute('id', `select_1`)
   select.addEventListener('change', el.handleSelect?.bind(el))
 
-  el.meta?.forEach(({ name, type }) => {
-    if (name === 'pickup_time') return
-
+  Object.keys(el.queries).forEach(key => {
     const option = document.createElement('option')
 
-    option.value = name
-    option.innerText = name.replace('_', ' ')
-    option.dataset.type = type
-    option.selected = name === el.selectedKeys[1]
+    option.value = key
+    option.innerText = key.replaceAll('_', ' ')
+    option.selected = key === el.selectedKeys[1]
 
     select.appendChild(option)
   })

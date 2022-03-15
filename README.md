@@ -3,7 +3,6 @@
 ## TODO
 - deep linking
 - view change
-- chart labels
 
 ## Setup
 

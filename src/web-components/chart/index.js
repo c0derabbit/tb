@@ -1,5 +1,5 @@
 import { getTripdata } from '../../api'
-import { getLast, isNumber } from '../../utils'
+import { getLast } from '../../utils'
 import {
   createChart,
   createChartHeader,
@@ -8,12 +8,23 @@ import {
   createStyle,
 } from '../../elements'
 import { CHART_STYLE } from '../../style'
-import { TRIP_COUNT_BY_15MIN_INTERVAL } from '../../queries'
+import {
+  SINGLE_PAX_RATIO_BY_15MIN_INTERVAL,
+  TRIP_COUNT_BY_15MIN_INTERVAL,
+} from '../../queries'
 
 export default class Chart extends HTMLElement {
+  queries = {
+    'total_rides': {
+      q: TRIP_COUNT_BY_15MIN_INTERVAL,
+    },
+    'single_passenger_rides': {
+      q: SINGLE_PAX_RATIO_BY_15MIN_INTERVAL,
+      formatter: val => `${val.toFixed(0)}%`,
+    },
+  }
   selectedKeys = ['pickup_time', 'total_rides']
   data
-  meta
   xValues
   yValues
 
@@ -27,10 +38,9 @@ export default class Chart extends HTMLElement {
   async connectedCallback() {
     try {
       const res = await getTripdata(TRIP_COUNT_BY_15MIN_INTERVAL)
-      const { meta, data } = await res.json()
+      const { data } = await res.json()
 
       this.data = data || []
-      this.meta = meta || []
 
       const chartComponents = [
         createChartHeader(this),
@@ -47,11 +57,19 @@ export default class Chart extends HTMLElement {
     }
   }
 
-  handleSelect(e) {
+  async handleSelect(e) {
     const { id, value } = e.target
     const selectIdx = id.substr(-1)
     this.selectedKeys[selectIdx] = value
-    this.updateChart()
+
+    try {
+      const res = await getTripdata(this.queries[value].q)
+      const { data } = await res.json()
+      this.data = data
+      this.updateChart()
+    } catch (error) {
+      window.EventBus.dispatchEvent('error', { error })
+    }
   }
 
   updateChart() {
@@ -62,13 +80,8 @@ export default class Chart extends HTMLElement {
     this.xValues = this.data.map(d => d[key0])
     this.yValues = this.data.map(d => d[key1]).sort((a, b) => a - b)
 
-    const keyType = (key) => this.meta.find(({ name }) => name === key)?.type
-    const getMax = (data, key) => isNumber(keyType(key))
-      ? getLast(data, key)
-      : data.length
-
-    const maxX = getMax(this.data, key0)
-    const maxY = getMax(this.yValues, key1)
+    const maxX = this.data.length
+    const maxY = key1 === 'single_passenger_rides' ? 100 : getLast(this.yValues, key1)
 
     this.updateLabels()
 
@@ -87,19 +100,20 @@ export default class Chart extends HTMLElement {
   }
 
   updateLabels() {
+    const { formatter } = this.queries[this.selectedKeys[1]]
     const xLabel = this.shadowRoot.getElementById('x-label')
     const yLabel = this.shadowRoot.getElementById('y-label')
     const xLabelValues = this.getLabelValues(this.xValues, 24)
-    const yLabelValues = this.getLabelValues(this.yValues, 10)
+    const yLabelValues = this.getLabelValues(this.yValues, 10, formatter)
 
     xLabel.innerHTML = `
       <small class="axis-legend">
         <span>${xLabelValues.join('</span><span>')}</span>
       </small>
-      <span>${this.selectedKeys[0].replace('_', ' ')}</span>
+      <span>${this.selectedKeys[0].replaceAll('_', ' ')}</span>
     `
     yLabel.innerHTML = `
-      <span>${this.selectedKeys[1].replace('_', ' ')}</span>
+      <span>${this.selectedKeys[1].replaceAll('_', ' ')}</span>
       <small class="axis-legend">
         <span><span>
           ${yLabelValues.join('</span></span><span><span>')}
@@ -108,16 +122,30 @@ export default class Chart extends HTMLElement {
     `
   }
 
-  getLabelValues(values, labelCount) {
+  getLabelValues(values, labelCount, formatter = val => val) {
     const step = values.length >= labelCount ? Math.round(values.length / labelCount) : 1
     const labels = []
+    const isPercentage = this.selectedKeys[1] === 'single_passenger_rides'
 
-    if (typeof values[0] === 'number')
-      labels.push(0)
+    if (typeof values[0] === 'number') {
+      const max = isPercentage ? 100 : values[values.length - 1]
+      return this.getLabelValuesInRange(max, labelCount, formatter)
+    }
 
     for (let i = 0; i < values.length - step + 1; i += step)
-      labels.push(values[i])
+      labels.push(formatter(values[i]))
     labels.push(values[values.length - 1])
+
+    return labels
+  }
+
+  getLabelValuesInRange(max, labelCount, formatter) {
+    const step = max >= labelCount ? Math.round(max / labelCount) : 1
+    const labels = []
+
+    for (let i = 0; i < max - step + 1; i += step)
+      labels.push(formatter(i))
+    labels.push(formatter(max))
 
     return labels
   }
