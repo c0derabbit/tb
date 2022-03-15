@@ -43,3 +43,22 @@ label {
   fill: var(--chart-primary);
 }
 `
+
+export const ERROR_STYLE = `
+@keyframes slide-in-out {
+  from { transform: translateX(400px) }
+  8% { transform: translateX(0) }
+  92% { transform: translateX(0) }
+  to { transform: translateX(400px) }
+}
+
+.error {
+  font-size: var(--text-sm);
+  color: var(--text-error);
+  border: 1px solid var(--text-error);
+  border-radius: var(--border-radius-sm);
+  background: var(--bg-error);
+  padding: var(--padding-sm);
+  animation: slide-in-out 4s linear;
+}
+`
