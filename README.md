@@ -1,5 +1,7 @@
 # Tinybird NYC yellow trip data exploration
 
+Demo: https://tripdata.vercel.app
+
 ## Setup
 
 Run `yarn` to install dependencies needed to run the project locally. Dependencies are strictly related to bundling and serving the project, and could have been left out — it’s just nicer to be able to write modern JS without regard to browser compatibility (although most modern browsers should be able to handle them, see [ES9 Spread operator on Can I use](https://caniuse.com/?search=spread)).
