@@ -1,5 +1,6 @@
 import {
   createChart,
+  createChartHeader,
   createDataPoint,
   createLabel,
   createLoader,
@@ -13,6 +14,21 @@ describe('elements', () => {
 
       expect(chart.innerHTML).toContain('<svg')
       expect(chart.innerHTML).toContain('<g id="datapoints">')
+    })
+  })
+
+  describe('chartHeader', () => {
+    it('has selects for chart axes', () => {
+      const testElement = {
+        queries: {
+          'foo': { q: 'test' },
+        },
+        selectedKeys: ['foo', 'bar'],
+        handleSelect: () => {},
+      }
+      const header = createChartHeader(testElement)
+
+      expect(header.innerHTML).toContain('<select id="select_1">')
     })
   })
 

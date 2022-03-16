@@ -130,10 +130,10 @@ export default class Chart extends HTMLElement {
       <small class="axis-legend">
         <span>${xLabelValues.join('</span><span>')}</span>
       </small>
-      <span>${this.selectedKeys[0].replaceAll('_', ' ')}</span>
+      <span>${this.selectedKeys[0].replace(/_/g, ' ')}</span>
     `
     yLabel.innerHTML = `
-      <span>${this.selectedKeys[1].replaceAll('_', ' ')}</span>
+      <span>${this.selectedKeys[1].replace(/_/g, ' ')}</span>
       <small class="axis-legend">
         <span><span>
           ${yLabelValues.join('</span></span><span><span>')}

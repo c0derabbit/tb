@@ -13,7 +13,7 @@ export default function createChartHeader(el) {
     const option = document.createElement('option')
 
     option.value = key
-    option.innerText = key.replaceAll('_', ' ')
+    option.innerText = key.replace(/_/g, ' ')
     option.selected = key === el.selectedKeys[1]
 
     select.appendChild(option)
